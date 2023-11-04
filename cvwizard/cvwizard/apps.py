@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class CvwizardConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'cvwizard'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "cvwizard"
