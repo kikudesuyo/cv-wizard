@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import render
 
 from .forms import UserForm
@@ -10,9 +10,10 @@ def index(request):
     if request.method == "POST":
         form = UserForm(request.POST)
         if form.is_valid():
-            name = form.cleaned_data["name"]
+            last_name = form.cleaned_data["last_name"]
+            first_name = form.cleaned_data["first_name"]
             birthdate = form.cleaned_data["birthdate"]
-            user = User(name=name, birthdate=birthdate)
+            user = User(last_name=last_name, first_name=first_name, birthdate=birthdate)
             user.save()
             return HttpResponse("Form is valid")
     else:
@@ -20,9 +21,6 @@ def index(request):
     return render(request, "cvwizard/index.html", {"form": form})
 
 
-def detail(request, user_id):
-    try:
-        user = User.objects.get(pk=user_id)
-    except User.DoesNotExist:
-        raise Http404("User does not exist")
-    return render(request, "cvwizard/detail.html", {"user": user})
+def view_users(request):
+    data_from_db = User.objects.values()
+    return render(request, "cvwizard/view_users.html", {"data_from_db": data_from_db})

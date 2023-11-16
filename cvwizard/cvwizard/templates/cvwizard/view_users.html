@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<head>
+  <title>Your Template</title>
+</head>
+<body>
+  <ul>
+    {% for data in data_from_db %}
+      {% for key, value in data.items %}
+        <li>{{ key }}: {{ value }}</li>
+      {% endfor %}
+    {% endfor %}
+  </ul>
+</body>
