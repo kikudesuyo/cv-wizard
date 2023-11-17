@@ -6,13 +6,13 @@
   <ul>
     <table border="1">
       <tr>
-        {% for key in data_attr %}
-          <th>{{ key }}</th>
+        {% for attr in data_attr %}
+          <th>{{ attr }}</th>
         {% endfor %}
       </tr>
         {% for data in data_from_db %}
             <tr>
-                {% for key, value in data.items %}
+                {% for _, value in data.items %}
                     <td>{{ value }}</td>
                 {% endfor %}
             </tr>
