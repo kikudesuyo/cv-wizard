@@ -4,7 +4,6 @@ from django.shortcuts import render
 from .forms import UserForm
 from .models import User
 
-
 # Create your views here.
 def index(request):
     if request.method == "POST":
@@ -23,4 +22,5 @@ def index(request):
 
 def view_users(request):
     data_from_db = User.objects.values()
-    return render(request, "cvwizard/view_users.html", {"data_from_db": data_from_db})
+    data_attr = [field.name for field in User._meta.get_fields()]
+    return render(request, "cvwizard/view_users.html", {"data_from_db": data_from_db, "data_attr": data_attr})

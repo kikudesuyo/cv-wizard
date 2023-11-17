@@ -4,10 +4,19 @@
 </head>
 <body>
   <ul>
-    {% for data in data_from_db %}
-      {% for key, value in data.items %}
-        <li>{{ key }}: {{ value }}</li>
-      {% endfor %}
-    {% endfor %}
+    <table border="1">
+      <tr>
+        {% for key in data_attr %}
+          <th>{{ key }}</th>
+        {% endfor %}
+      </tr>
+        {% for data in data_from_db %}
+            <tr>
+                {% for key, value in data.items %}
+                    <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
   </ul>
 </body>
