@@ -9,7 +9,7 @@ class User(models.Model):
     first_name = models.CharField(max_length=200)
     birthdate = models.DateField("date of birth")
 
-    def save(self, *args, **kwargs):
+    def add(self, *args, **kwargs):
         if self.birthdate > date.today():
             raise ValueError("Birthdate cannot be in the future")
         super().save(*args, **kwargs)
