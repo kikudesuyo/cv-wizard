@@ -19,5 +19,6 @@ from django.urls import include, path
 
 urlpatterns = [
     path("", include("cvwizard.urls")),
+    path("", include("account.urls")),
     path("admin/", admin.site.urls),
 ]

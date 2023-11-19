@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "account.apps.AccountConfig",
     "cvwizard.apps.CvwizardConfig",
     "django.contrib.admin",
     "django.contrib.auth",
