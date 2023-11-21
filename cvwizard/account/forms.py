@@ -13,4 +13,3 @@ class ChangePasswordForm(forms.Form):
 
 class DeleteAccountForm(forms.Form):
     password = forms.CharField(label="Password", max_length=200)
-    email = forms.EmailField(label="Email", max_length=200)
