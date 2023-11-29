@@ -1,14 +1,22 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.views import View
 
 from .forms import UserForm
 from .models import User
 
 
 # Create your views here.
-def index(request):
-    if request.method == "POST":
-        form = UserForm(request.POST)
+class FormView(View):
+    form_class = UserForm
+    template_name = "cvwizard/index.html"
+
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {"form": form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
         if form.is_valid():
             last_name = form.cleaned_data["last_name"]
             first_name = form.cleaned_data["first_name"]
@@ -16,16 +24,17 @@ def index(request):
             user = User(last_name=last_name, first_name=first_name, birthdate=birthdate)
             user.add()
             return HttpResponse("Form is valid")
-    else:
-        form = UserForm()
-    return render(request, "cvwizard/index.html", {"form": form})
+        return render(request, self.template_name, {"form": form})
 
 
-def view_users(request):
-    data_from_db = User.objects.values()
-    data_attr = [field.name for field in User._meta.get_fields()]
-    return render(
-        request,
-        "cvwizard/view_users.html",
-        {"data_from_db": data_from_db, "data_attr": data_attr},
-    )
+class DatabaseView(View):
+    template_name = "cvwizard/view_users.html"
+
+    def get(self, request):
+        data_from_db = User.objects.values()
+        data_attr = [field.name for field in User._meta.get_fields()]
+        return render(
+            request,
+            self.template_name,
+            {"data_from_db": data_from_db, "data_attr": data_attr},
+        )

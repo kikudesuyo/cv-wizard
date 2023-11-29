@@ -3,6 +3,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("cvwizard/", views.index, name="index"),
-    path("cvwizard/view_users/", views.view_users, name="view_users"),
+    path("cvwizard/", views.FormView.as_view(), name="index"),
+    path("cvwizard/view_users/", views.DatabaseView.as_view(), name="view_users"),
 ]
