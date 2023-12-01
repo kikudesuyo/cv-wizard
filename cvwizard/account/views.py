@@ -1,8 +1,9 @@
+from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-from .forms import DeleteAccountForm, SignUpForm
+from .forms import DeleteAccountForm, LoginForm, SignUpForm
 from .models import AccountManagement
 
 
@@ -29,6 +30,30 @@ class SignUpView(View):
                 return HttpResponse("Form is valid")
         else:
             return HttpResponse("Form is invalid")
+
+
+class LoginView(View):
+    def get(self, request):
+        form = LoginForm()
+        return render(request, "account/login.html", {"form": form})
+
+    def post(self, request):
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username_or_email = form.cleaned_data["username_or_email"]
+            password = form.cleaned_data["password"]
+            if (
+                AccountManagement.objects.filter(username=username_or_email).exists()
+                or AccountManagement.objects.filter(email=username_or_email).exists()
+            ):
+                if AccountManagement.objects.filter(password=password).exists():
+                    return HttpResponse("Successfully logged in")
+                else:
+                    # ログインページに移動
+                    return HttpResponse("Password is not correct")
+            else:
+                # アカウント削除ページに移動
+                return HttpResponse("Password is not correct")
 
 
 class DeleteAccountView(View):

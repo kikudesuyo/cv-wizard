@@ -7,6 +7,11 @@ class SignUpForm(forms.Form):
     email = forms.EmailField(label="Email", max_length=200)
 
 
+class LoginForm(forms.Form):
+    username_or_email = forms.CharField(label="Username or Email", max_length=200)
+    password = forms.CharField(label="password", max_length=200)
+
+
 class ChangePasswordForm(forms.Form):
     email = forms.EmailField(label="Email", max_length=200)
 
