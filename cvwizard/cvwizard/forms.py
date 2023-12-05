@@ -1,7 +1,10 @@
 from django import forms
 
+from .models import User
 
-class UserForm(forms.Form):
-    last_name = forms.CharField(label="Last Name", max_length=200)
-    first_name = forms.CharField(label="First Name", max_length=200)
-    birthdate = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["last_name", "first_name", "birthdate"]
+        widgets = {"birthdate": forms.DateInput(attrs={"type": "date"})}
