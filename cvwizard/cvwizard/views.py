@@ -1,33 +1,22 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.views import View
+from django.views.generic import FormView, ListView
 
 from .forms import UserForm
 from .models import User
 
 
 # Create your views here.
-class FormView(View):
+class FormView(FormView):
     form_class = UserForm
     template_name = "cvwizard/index.html"
 
-    def get(self, request):
-        form = self.form_class()
-        return render(request, self.template_name, {"form": form})
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            last_name = form.cleaned_data["last_name"]
-            first_name = form.cleaned_data["first_name"]
-            birthdate = form.cleaned_data["birthdate"]
-            user = User(last_name=last_name, first_name=first_name, birthdate=birthdate)
-            user.add()
-            return HttpResponse("Form is valid")
-        return render(request, self.template_name, {"form": form})
+    def form_valid(self, form):
+        form.save()
+        return HttpResponse("Form is valid")
 
 
-class DatabaseView(View):
+class DatabaseView(ListView):
     template_name = "cvwizard/view_users.html"
 
     def get(self, request):
