@@ -1,13 +1,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.generic import FormView, ListView
+from django.views.generic import FormView as GenericFormView
+from django.views.generic import ListView
 
 from .forms import UserForm
 from .models import User
 
 
 # Create your views here.
-class FormView(FormView):
+class FormView(GenericFormView):
     form_class = UserForm
     template_name = "cvwizard/index.html"
 
