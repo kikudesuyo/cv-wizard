@@ -2,34 +2,27 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
+from django.views.generic import TemplateView
+from django.views.generic.edit import CreateView
 
 from .forms import DeleteAccountForm, LoginForm, SignUpForm
 from .models import AccountManagement
 
 
 # Create your views here.
-class SignUpView(View):
+class TopView(TemplateView):
     def get(self, request):
-        form = SignUpForm()
-        return render(request, "account/signup.html", {"form": form})
+        return render(request, "account/top.html")
 
-    def post(self, request):
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password"]
-            email = form.cleaned_data["email"]
-            if AccountManagement.objects.filter(email=email).exists():
-                return HttpResponse("This Email already exists")
-            else:
-                registration = AccountManagement(
-                    username=username, password=password, email=email
-                )
-                registration.add()
-                # topページにリダイレクト
-                return HttpResponse("Form is valid")
-        else:
-            return HttpResponse("Form is invalid")
+
+class SignUpView(CreateView):
+    template_name = "account/signup.html"
+    form_class = SignUpForm
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return render(self.request, "account/profile.html")
 
 
 class LoginView(View):
@@ -54,6 +47,10 @@ class LoginView(View):
             else:
                 # アカウント削除ページに移動
                 return HttpResponse("Password is not correct")
+
+
+class ProfileView(TemplateView):
+    template_name = "account/profile.html"
 
 
 class DeleteAccountView(View):
