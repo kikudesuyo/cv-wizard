@@ -22,7 +22,10 @@ class SignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return render(self.request, "account/profile.html")
+        return render(self.request, "account/top.html")
+
+    def form_invalid(self, form):
+        return super().form_invalid(form)
 
 
 class LoginView(View):
