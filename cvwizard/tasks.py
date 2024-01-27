@@ -14,6 +14,16 @@ def run(c, filename):
 
 
 @task
+def runserver(c):
+    path = os.path.abspath(os.path.dirname(__file__))
+    print(path)
+    if os.name == "nt":
+        c.run(f"set PYTHONPATH=%PYTHONPATH%;{path} & python manage.py runserver")
+    else:
+        c.run(f'export PYTHONPATH="$PYTHONPATH:{path}" && python {filename}')
+
+
+@task
 def test(c, filename):
     path = os.path.abspath(os.path.dirname(__file__))
     if os.name == "nt":
